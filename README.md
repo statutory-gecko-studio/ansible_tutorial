@@ -1,2 +1,4 @@
 # ansible_tutorial
-Testing and crashing virtual machines.
+
+This is my awesome Ansible repository.
+
