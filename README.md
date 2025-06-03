@@ -1,2 +1,2 @@
 # ansible_tutorial
-Testinng and crashing virtual machines.
+Testing and crashing virtual machines.
