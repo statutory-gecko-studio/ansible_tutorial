@@ -1,4 +1,4 @@
-10.0.0.101
-10.0.0.102
-10.0.0.103
-10.0.0.104
+10.0.0.101 apache_package=apache2 php_package=libapache2-mod-php
+10.0.0.102 apache_package=apache2 php_package=libapache2-mod-php
+10.0.0.103 apache_package=apache2 php_package=libapache2-mod-php
+10.0.0.104 apache_package=httpd php_package=php
