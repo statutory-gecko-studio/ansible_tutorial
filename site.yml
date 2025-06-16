@@ -3,25 +3,30 @@
 - hosts: all
   become: true
   tasks:
-
-    - name: install updates (Almalinux)
+    - name: Update repo cache (Almalinux)
       tags: always
       dnf:
-        update_only: yes
         update_cache: yes
+      changed_when: false  
       when: ansible_distribution == "AlmaLinux"
 
-    - name: install updates (Ubuntu)
+    - name: Update repo cache (Ubuntu)
       tags: always
       apt:
-        upgrade: dist
         update_cache: yes
+      changed_when: false
       when: ansible_distribution == "Ubuntu"
 
+    - name: add ssh key for tsimonjero
+      tags: always
+      authorized_key:
+        user: tsimonjero
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM7d7YhaJ8AUGzy3tWGGvLzltMHTjRwdMfG7mle4Vlth ansible"
+
+     
 - hosts: web_servers
   become: true
   tasks:
-
     - name: install apache and php for Ubuntu servers
       tags: apache, apache2, ubuntu
       apt:
@@ -61,6 +66,7 @@
       service:
         name: httpd
         state: restarted
+      when: ansible_distribution == "AlmaLinux"
 
     - name: copy default html for site
       tags: apache,apache2,httpd
@@ -74,7 +80,6 @@
 - hosts: db_servers
   become: true
   tasks:
-
     - name: install mariadb package (almalinux)
       tags: mariadb,db,almalinux
       dnf:
@@ -95,7 +100,6 @@
 - hosts: file_servers 
   become: true
   tasks:
-
     - name: install samba package
       tags: samba
       package:
@@ -106,7 +110,6 @@
 - hosts: workstation
   become: true
   tasks:
-
     - name: install unzip
       package:
         name: unzip

@@ -1,0 +1,44 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: install updates (Almalinux)
+      tags: always
+      dnf:
+        update_only: yes
+        update_cache: yes
+      when: ansible_distribution == "AlmaLinux"
+
+    - name: install updates (Ubuntu)
+      tags: always
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+    - name: create tsimonjero user
+      tags: always
+      user:
+        name: tsimonjero
+        groups: root
+
+    - name: add ssh key for tsimonjero
+      tags: always
+      authorized_key:
+        user: tsimonjero
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM7d7YhaJ8AUGzy3tWGGvLzltMHTjRwdMfG7mle4Vlth ansible"
+
+    - name: add sudoers file for tsimonjero
+      tags: always
+      copy:
+        src: sudoer_tsimonjero
+        dest: /etc/sudoers.d/tsimonjero
+        owner: root
+        group: root
+        mode: 0440
+      
+
